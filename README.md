@@ -2,6 +2,7 @@
 
 This project shows how to train a Fashion MNIST model using an Azure ML pipeline, and how to deploy it using an online managed endpoint. It demonstrates how to create Azure ML resources using the following three methods: the Azure ML Studio UI, Python SDK, and CLI. It uses MLflow for tracking and model representation.
 
+
 ## Azure setup
 
 * You need to have an Azure subscription. You can get a [free subscription](https://azure.microsoft.com/en-us/free?WT.mc_id=aiml-44165-bstollnitz) to try it out.
@@ -91,37 +92,31 @@ Create the dataset using the [Azure ML Studio UI](https://ml.azure.com/). Go to 
 * Click Create.
 
 
-### Create the components
-
-Create the components using the CLI. Type the following in the terminal:
-
-```
-cd aml-resources
-```
-
-```
-az ml component create -f components/train.yml
-az ml component create -f components/test.yml
-```
-
-
 ### Create and run the pipeline
 
-(TODO: Use the Python SDK.)
-
-```
-run_id=$(az ml job create -f cloud/pipeline.yml --query name -o tsv)
-```
-
-Go to the Azure ML Studio and wait until the Job completes.
+Run components/pipeline.py. Wait until it completes.
 
 
 ### Register the model
 
-Create the Azure ML model from the output.
+When the pipeline is done running, it prints the run id at the end. For example:
 
 ```
-az ml model create --name model-pipeline --version 1 --path "azureml://jobs/$run_id/outputs/model" --type mlflow_model
+Execution Summary
+=================
+RunId: blue_soca_jkf490bx8y
+```
+
+Set the shell variable run_id to that run id. For example:
+
+```
+run_id=blue_soca_jkf490bx8y
+```
+
+Create the Azure ML model using the CLI.
+
+```
+az ml model create --name model-resources --version 1 --path "azureml://jobs/$run_id/outputs/model_dir" --type mlflow_model
 ```
 
 ### Create the endpoint

@@ -13,3 +13,6 @@ dependencies:
   - yapf==0.31.0
   - pylint==2.12.2
   - mypy==0.910
+  - pip==21.2.4
+  - pip:
+    - azure-ai-ml==0.1.0b3
