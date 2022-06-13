@@ -1,4 +1,4 @@
-name: aml-resources
+name: aml-pipeline-mixed
 channels:
   - anaconda
   - pytorch

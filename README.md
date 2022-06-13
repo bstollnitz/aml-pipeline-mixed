@@ -34,14 +34,14 @@ conda env create -f environment.yml
 Activate conda environment:
 
 ```
-conda activate aml-resources
+conda activate aml-pipeline-mixed
 ```
 
 
 ## Train and predict locally
 
 ```
-cd aml-resources
+cd aml-pipeline-mixed
 ```
 
 * Run train.py by pressing F5.
@@ -116,20 +116,19 @@ run_id=blue_soca_jkf490bx8y
 Create the Azure ML model using the CLI.
 
 ```
-az ml model create --name model-resources --version 1 --path "azureml://jobs/$run_id/outputs/model_dir" --type mlflow_model
+az ml model create --name model-pipeline-mixed --version 1 --path "azureml://jobs/$run_id/outputs/model_dir" --type mlflow_model
 ```
 
-### Create the endpoint
+### Create and invoke the endpoint
 
-(TODO: Use Azure ML VS Code extension.)
+Create the deployment and endpoint using the CLI, with the help of the Azure ML VS Code extension.
 
-```
-az ml online-endpoint create -f cloud/endpoint.yml
-az ml online-deployment create -f cloud/deployment.yml --all-traffic
-```
+Open cloud/endpoint.yml, right-click, and select "Azure ML: Execute YAML." Once the endpoint is created, do the same for cloud/deployment.yml.
+
+Go to the Azure ML Studio, "Endpoints", click on the "endpoint-pipeline-mixed" endpoint, "Update traffic", and set the traffic to 100%.
 
 Invoke the endpoint.
 
 ```
-az ml online-endpoint invoke --name endpoint-pipeline --request-file test-data/images_azureml.json
+az ml online-endpoint invoke --name endpoint-pipeline-mixed --request-file test-data/images_azureml.json
 ```
