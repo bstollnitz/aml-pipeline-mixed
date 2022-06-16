@@ -125,7 +125,12 @@ Create the deployment and endpoint using the CLI, with the help of the Azure ML 
 
 Open cloud/endpoint.yml, right-click, and select "Azure ML: Execute YAML." Once the endpoint is created, do the same for cloud/deployment.yml.
 
-Go to the Azure ML Studio, "Endpoints", click on the "endpoint-pipeline-mixed" endpoint, "Update traffic", and set the traffic to 100%.
+Set the traffic of the deployment to 100%.
+
+```
+az ml online-endpoint update -n endpoint-pipeline-mixed --traffic "blue=100"
+```
+
 
 Invoke the endpoint.
 
