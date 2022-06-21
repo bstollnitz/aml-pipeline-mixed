@@ -104,8 +104,12 @@ Make sure you have a "config.json" file somewhere in the parent folder hierarchy
 }
 ```
 
-Run components/pipeline-job.py. Wait until it completes.
+Run components/pipeline-job.py. 
+Go to the Azure ML Studio and wait until the Job completes. You don't need to download the trained model, but here's how you would do it if you wanted to:
 
+```
+az ml job download --name $run_id --output-name "model_dir"
+```
 
 ### Register the model
 
