@@ -34,14 +34,14 @@ conda env create -f environment.yml
 Activate conda environment:
 
 ```
-conda activate aml-pipeline-mixed
+conda activate aml_pipeline_mixed
 ```
 
 
 ## Train and predict locally
 
 ```
-cd aml-pipeline-mixed
+cd aml_pipeline_mixed
 ```
 
 * Run train.py by pressing F5.
@@ -55,8 +55,8 @@ mlflow ui
 * Make a local prediction using the trained mlflow model. You can use either csv or json files:
 
 ```
-mlflow models predict --model-uri "model" --input-path "test-data/images.csv" --content-type csv
-mlflow models predict --model-uri "model" --input-path "test-data/images.json" --content-type json
+mlflow models predict --model-uri "model" --input-path "test_data/images.csv" --content-type csv
+mlflow models predict --model-uri "model" --input-path "test_data/images.json" --content-type json
 ```
 
 
@@ -68,10 +68,10 @@ Create the compute cluster using the [Azure ML Studio UI](https://ml.azure.com/)
 
 * Select a Location, such as "West US 2."
 * Select a Virtual machine tier, such as "Dedicated."
-* Select a Virtual machine type, such as "GPU."
-* Select a Virtual machine size, such as "Standard_NC6s_v3."
+* Select a Virtual machine type, such as "CPU."
+* Select a Virtual machine size, such as "Standard_DS4_v2."
 * Click Next.
-* Enter a Compute name, such as "cluster-gpu."
+* Enter a Compute name, such as "cluster-cpu."
 * Select a Minimum number of nodes, such as 0.
 * Select a Maximum number of nodes, such as 4.
 * Click Create.
@@ -94,7 +94,17 @@ Create the dataset using the [Azure ML Studio UI](https://ml.azure.com/). Go to 
 
 ### Create and run the pipeline
 
-Run components/pipeline.py. Wait until it completes.
+Make sure you have a "config.json" file somewhere in the parent folder hierarchy of your project containing your Azure subscription ID, resource group, and workspace:
+
+```
+{
+    "subscription_id": ...,
+    "resource_group": ...,
+    "workspace_name": ...
+}
+```
+
+Run components/pipeline-job.py. Wait until it completes.
 
 
 ### Register the model
@@ -131,9 +141,8 @@ Set the traffic of the deployment to 100%.
 az ml online-endpoint update -n endpoint-pipeline-mixed --traffic "blue=100"
 ```
 
-
 Invoke the endpoint.
 
 ```
-az ml online-endpoint invoke --name endpoint-pipeline-mixed --request-file test-data/images_azureml.json
+az ml online-endpoint invoke --name endpoint-pipeline-mixed --request-file test_data/images_azureml.json
 ```

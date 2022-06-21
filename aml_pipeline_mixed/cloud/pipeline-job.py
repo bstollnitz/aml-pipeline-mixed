@@ -8,7 +8,7 @@ from azure.ai.ml import MLClient, Input, load_component
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.dsl import pipeline
 
-COMPUTE_NAME = "cluster-gpu"
+COMPUTE_NAME = "cluster-cpu"
 DATA_NAME = "data-fashion-mnist"
 DATA_VERSION = "1"
 EXPERIMENT_NAME = "aml-pipeline-mixed"
@@ -38,6 +38,7 @@ def main():
               display_name="train_test_fashion_mnist")
     def pipeline_func(data_dir: Input) -> Dict:
         train_job = train_component(data_dir=data_dir)
+        # Ignoring pylint because "test_job" shows up in the Studio UI.
         test_job = test_component(  # pylint: disable=unused-variable
             data_dir=data_dir,
             model_dir=train_job.outputs.model_dir)
