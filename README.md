@@ -1,6 +1,6 @@
 # How to create Azure ML resources using different methods
 
-This project shows how to train a Fashion MNIST model using an Azure ML pipeline, and how to deploy it using an online managed endpoint. It demonstrates how to create Azure ML resources using the following three methods: the Azure ML Studio UI, Python SDK, and CLI. It uses MLflow for tracking and model representation.
+This project shows how to train a Fashion MNIST model using an Azure ML pipeline, and how to deploy it using an online managed endpoint. It demonstrates how to create Azure ML resources using the following three methods: the Azure ML Studio UI, the Azure ML Python SDK, and the Azure ML CLI. It uses MLflow for tracking and model representation.
 
 
 ## Azure setup
@@ -38,11 +38,7 @@ conda activate aml_pipeline_mixed
 ```
 
 
-## Train and predict locally
-
-```
-cd aml_pipeline_mixed
-```
+## Training and inference on your development machine
 
 * Run train.py by pressing F5.
 * Run test.py the same way.
@@ -52,15 +48,8 @@ cd aml_pipeline_mixed
 mlflow ui
 ```
 
-* Make a local prediction using the trained mlflow model. You can use either csv or json files:
 
-```
-mlflow models predict --model-uri "model" --input-path "test_data/images.csv" --content-type csv
-mlflow models predict --model-uri "model" --input-path "test_data/images.json" --content-type json
-```
-
-
-## Train and deploy in the cloud
+## Training and deployment in the cloud
 
 ### Create the compute cluster
 
@@ -149,4 +138,10 @@ Invoke the endpoint.
 
 ```
 az ml online-endpoint invoke --name endpoint-pipeline-mixed --request-file test_data/images_azureml.json
+```
+
+Clean up the endpoint to avoid getting charged.
+
+```
+az ml online-endpoint delete --name endpoint-pipeline-mixed -y
 ```
