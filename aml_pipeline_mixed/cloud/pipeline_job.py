@@ -33,9 +33,7 @@ def main():
     test_component = load_component(path=TEST_PATH)
 
     # Create and submit pipeline.
-    @pipeline(default_compute=COMPUTE_NAME,
-              experiment_name=EXPERIMENT_NAME,
-              display_name="train_test_fashion_mnist")
+    @pipeline(default_compute=COMPUTE_NAME, experiment_name=EXPERIMENT_NAME)
     def pipeline_func(data_dir: Input) -> Dict:
         train_job = train_component(data_dir=data_dir)
         # Ignoring pylint because "test_job" shows up in the Studio UI.

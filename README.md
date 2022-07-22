@@ -93,12 +93,8 @@ Make sure you have a "config.json" file somewhere in the parent folder hierarchy
 }
 ```
 
-Run components/pipeline-job.py. 
-Go to the Azure ML Studio and wait until the Job completes. You don't need to download the trained model, but here's how you would do it if you wanted to:
-
-```
-az ml job download --name $run_id --output-name "model_dir"
-```
+Run components/pipeline_job.py. 
+Go to the Azure ML Studio and wait until the Job completes. 
 
 ### Register the model
 
@@ -120,6 +116,12 @@ Create the Azure ML model using the CLI.
 
 ```
 az ml model create --name model-pipeline-mixed --version 1 --path "azureml://jobs/$run_id/outputs/model_dir" --type mlflow_model
+```
+
+You don't need to download the trained model, but here's how you would do it if you wanted to:
+
+```
+az ml job download --name $run_id --output-name "model_dir"
 ```
 
 ### Create and invoke the endpoint
