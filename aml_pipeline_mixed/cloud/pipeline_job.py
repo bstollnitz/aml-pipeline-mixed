@@ -11,7 +11,7 @@ from azure.ai.ml.dsl import pipeline
 COMPUTE_NAME = "cluster-cpu"
 DATA_NAME = "data-fashion-mnist"
 DATA_VERSION = "1"
-EXPERIMENT_NAME = "aml-pipeline-mixed"
+EXPERIMENT_NAME = "aml_pipeline_mixed"
 TRAIN_PATH = Path(Path(__file__).parent, "train.yml")
 TEST_PATH = Path(Path(__file__).parent, "test.yml")
 
