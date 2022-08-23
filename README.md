@@ -155,5 +155,5 @@ az ml online-endpoint delete --name endpoint-pipeline-mixed -y
 
 
 ## Related resources
-* [Train with the SDK](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-sdk)
-* [Train with the CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
+* [Train with the SDK](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-sdk?WT.mc_id=aiml-44165-bstollnitz)
+* [Train with the CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli?WT.mc_id=aiml-44165-bstollnitz)
