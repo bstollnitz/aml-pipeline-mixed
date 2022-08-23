@@ -3,6 +3,11 @@
 This project shows how to train a Fashion MNIST model using an Azure ML pipeline, and how to deploy it using an online managed endpoint. It demonstrates how to create Azure ML resources using the following three methods: the Azure ML Studio UI, the Azure ML Python SDK, and the Azure ML CLI. It uses MLflow for tracking and model representation.
 
 
+## Blog post
+
+To learn more about the code in this repo, check out the accompanying blog post: https://bea.stollnitz.com/blog/aml-pipeline-mixed/
+
+
 ## Azure setup
 
 * You need to have an Azure subscription. You can get a [free subscription](https://azure.microsoft.com/en-us/free?WT.mc_id=aiml-44165-bstollnitz) to try it out.
@@ -147,3 +152,8 @@ Clean up the endpoint to avoid getting charged.
 ```
 az ml online-endpoint delete --name endpoint-pipeline-mixed -y
 ```
+
+
+## Related resources
+* [Train with the SDK](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-sdk)
+* [Train with the CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
