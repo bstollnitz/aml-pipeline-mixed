@@ -2,7 +2,6 @@
 
 import logging
 from pathlib import Path
-from typing import Dict
 
 from azure.ai.ml import MLClient, Input, load_component
 from azure.identity import DefaultAzureCredential
@@ -16,7 +15,7 @@ TRAIN_PATH = Path(Path(__file__).parent, "train.yml")
 TEST_PATH = Path(Path(__file__).parent, "test.yml")
 
 
-def main():
+def main() -> None:
     logging.basicConfig(level=logging.INFO)
     credential = DefaultAzureCredential()
     ml_client = MLClient.from_config(credential=credential)
@@ -34,7 +33,7 @@ def main():
 
     # Create and submit pipeline.
     @pipeline(default_compute=COMPUTE_NAME, experiment_name=EXPERIMENT_NAME)
-    def pipeline_func(data_dir: Input) -> Dict:
+    def pipeline_func(data_dir: Input) -> dict[str, str]:
         train_job = train_component(data_dir=data_dir)
         # Ignoring pylint because "test_job" shows up in the Studio UI.
         test_job = test_component(  # pylint: disable=unused-variable
