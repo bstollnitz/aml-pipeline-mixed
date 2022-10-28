@@ -8,45 +8,37 @@ This project shows how to train a Fashion MNIST model using an Azure ML pipeline
 To learn more about the code in this repo, check out the accompanying blog post: https://bea.stollnitz.com/blog/aml-pipeline-mixed/
 
 
-## Azure setup
+## Setup
 
-* You need to have an Azure subscription. You can get a [free subscription](https://azure.microsoft.com/en-us/free?WT.mc_id=aiml-44165-bstollnitz) to try it out.
-* Create a [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal?WT.mc_id=aiml-44165-bstollnitz).
-* Create a new machine learning workspace by following the "Create the workspace" section of the [documentation](https://docs.microsoft.com/en-us/azure/machine-learning/quickstart-create-resources?WT.mc_id=aiml-44165-bstollnitz). Keep in mind that you'll be creating a "machine learning workspace" Azure resource, not a "workspace" Azure resource, which is entirely different!
+* You need to have an Azure subscription. You can get a [free subscription](https://azure.microsoft.com/en-us/free) to try it out.
+* Create a [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal).
+* Create a new machine learning workspace by following the "Create the workspace" section of the [documentation](https://docs.microsoft.com/en-us/azure/machine-learning/quickstart-create-resources). Keep in mind that you'll be creating a "machine learning workspace" Azure resource, not a "workspace" Azure resource, which is entirely different!
 * If you have access to GitHub Codespaces, click on the "Code" button in this GitHub repo, select the "Codespaces" tab, and then click on "New codespace."
 * Alternatively, if you plan to use your local machine:
-  * Install the Azure CLI by following the instructions in the [documentation](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?WT.mc_id=aiml-44165-bstollnitz).
-  * Install the ML extension to the Azure CLI by following the "Installation" section of the [documentation](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli?WT.mc_id=aiml-44165-bstollnitz).
-* In a terminal window, login to Azure by executing `az login --use-device-code`. 
+  * Install the Azure CLI by following the instructions in the [documentation](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+  * Install the ML extension to the Azure CLI by following the "Installation" section of the [documentation](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
+  * Install and activate the conda environment by executing the following commands:
+  ```
+  conda env create -f environment.yml
+  conda activate aml_pipeline_mixed
+  ```
+* In a terminal window, log in to Azure by executing `az login --use-device-code`. 
 * Set your default subscription by executing `az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"`. You can verify your default subscription by executing `az account show`, or by looking at `~/.azure/azureProfile.json`.
 * Set your default resource group and workspace by executing `az configure --defaults group="<YOUR_RESOURCE_GROUP>" workspace="<YOUR_WORKSPACE>"`. You can verify your defaults by executing `az configure --list-defaults` or by looking at `~/.azure/config`.
-* You can now open the [Azure Machine Learning studio](https://ml.azure.com/?WT.mc_id=aiml-44165-bstollnitz), where you'll be able to see and manage all the machine learning resources we'll be creating.
-* Although not essential to run the code in this post, I highly recommend installing the [Azure Machine Learning extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-ai).
-
-
-## Project setup
-
-If you have access to GitHub Codespaces, click on the "Code" button in this GitHub repo, select the "Codespaces" tab, and then click on "New codespace."
-
-Alternatively, you can set up your local machine using the following steps.
-
-Install conda environment:
-
-```
-conda env create -f environment.yml
-```
-
-Activate conda environment:
-
-```
-conda activate aml_pipeline_mixed
-```
+* Add a `config.json` file to the root of your project (or somewhere in the parent folder hierarchy) containing your Azure subscription ID, resource group, and workspace:
+{
+    "subscription_id": "<YOUR_SUBSCRIPTION_ID>",
+    "resource_group": "<YOUR_RESOURCE_GROUP>",
+    "workspace_name": "<YOUR_WORKSPACE>"
+}
+* You can now open the [Azure Machine Learning studio](https://ml.azure.com/), where you'll be able to see and manage all the machine learning resources we'll be creating.
+* Install the [Azure Machine Learning extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-ai), and log in to it by clicking on "Azure" in the left-hand menu, and then clicking on "Sign in to Azure."
 
 
 ## Training and inference on your development machine
 
-* Run train.py by pressing F5.
-* Run test.py the same way.
+* Under "Run and Debug" on VS Code's left navigation, choose the "Train locally" run configuration and press F5.
+* Do the same for the "Test locally" run configuration.
 * You can analyze the metrics logged in the "mlruns" directory with the following command:
 
 ```
@@ -88,17 +80,7 @@ Create the dataset using the [Azure ML Studio UI](https://ml.azure.com/). Go to 
 
 ### Create and run the pipeline
 
-Make sure you have a "config.json" file somewhere in the parent folder hierarchy of your project containing your Azure subscription ID, resource group, and workspace:
-
-```
-{
-    "subscription_id": ...,
-    "resource_group": ...,
-    "workspace_name": ...
-}
-```
-
-Run components/pipeline_job.py. 
+Select the "Train in the cloud" run configuration and press F5.
 Go to the Azure ML Studio and wait until the Job completes. 
 
 ### Register the model
@@ -120,6 +102,7 @@ run_id=blue_soca_jkf490bx8y
 Create the Azure ML model using the CLI.
 
 ```
+cd aml_pipeline_mixed
 az ml model create --name model-pipeline-mixed --version 1 --path "azureml://jobs/$run_id/outputs/model_dir" --type mlflow_model
 ```
 
@@ -131,14 +114,11 @@ az ml job download --name $run_id --output-name "model_dir"
 
 ### Create and invoke the endpoint
 
-Create the deployment and endpoint using the CLI, with the help of the Azure ML VS Code extension.
-
-Open cloud/endpoint.yml, right-click, and select "Azure ML: Execute YAML." Once the endpoint is created, do the same for cloud/deployment.yml.
-
-Set the traffic of the deployment to 100%.
+Create the deployment and endpoint using the CLI:
 
 ```
-az ml online-endpoint update -n endpoint-pipeline-mixed --traffic "blue=100"
+az ml online-endpoint create -f cloud/endpoint.yml
+az ml online-deployment create -f cloud/deployment.yml --all-traffic
 ```
 
 Invoke the endpoint.

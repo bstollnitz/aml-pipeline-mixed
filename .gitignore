@@ -132,3 +132,4 @@ data/
 model/
 named-outputs/
 mlruns/
+config.json
