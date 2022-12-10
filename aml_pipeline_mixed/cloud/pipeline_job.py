@@ -28,8 +28,8 @@ def main() -> None:
     data = ml_client.data.get(name=DATA_NAME, version=DATA_VERSION)
 
     # We'll use the components directly, without registering them first.
-    train_component = load_component(path=TRAIN_PATH)
-    test_component = load_component(path=TEST_PATH)
+    train_component = load_component(source=TRAIN_PATH)
+    test_component = load_component(source=TEST_PATH)
 
     # Create and submit pipeline.
     @pipeline(default_compute=COMPUTE_NAME, experiment_name=EXPERIMENT_NAME)
